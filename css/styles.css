@@ -1,56 +1,6 @@
-* { margin: 0; padding: 0; }
-
-body {
-	background: #eee;
-	color: #111;
-	font-family: 'Volkhov' serif;
-}
-
-.container {
-	margin: 0 auto;
-	width: 800px;
-}
-
-header {
-	color: #888;
-	line-height: 36px;
-	padding: 18px 0;
-	width: 100%;
-}
-
-.content .container {
-	background: #fff;
-	border-radius: 16px;
-	box-shadow: 0 0 8px #888;
-	text-align: center;
-}
-
-footer {
-	background: #e4e4e4;
-	border-radius: 16px;
-	color: #aaa;
-	margin-top: 32px;
-	padding: 18px 0;
-	text-align: center;
-	text-shadow: 1px 1px #fff;
-	width: 100%;
-}
-
-.big-icon {
-	border-radius: 16px;
-	display: inline-block;
-	height: 180px;
-	line-height: 180px;
-	margin: 8px;
-	text-align: center;
-	width: 180px;
-}
-
-.big-icon:hover {
-	background: #f4f4f4;
-	box-shadow: 0 0 8px 0 #ccc;
-}
-
-.big-icon img {
-	vertical-align: middle;
-}
+body { background: #eee url('../img/grid.png'); color: #444; }
+.name { line-height: 24px; margin: 18px 0 0; text-shadow: 0px 1px 2px #888; }
+.title { color: #888; font-style: italic; margin-top: 0; }
+.contact { line-height: 72px; }
+.contact a img { opacity: 0.4; width: 32px; }
+.contact a img:hover { opacity: 0.8; }
