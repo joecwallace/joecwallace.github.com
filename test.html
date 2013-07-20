@@ -1,0 +1,174 @@
+<html>
+<head>
+	<title></title>
+
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+
+	<style type="text/css">
+	.container { margin: 0 auto; max-width: 600px; text-align: justify; }
+
+	.relevance-container {
+		padding-right: 3em;
+		position: relative;
+	}
+	.relevance {
+		overflow: hidden;
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 3em;
+		z-index: 995;
+
+		background-image: -ms-linear-gradient(right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 100%);
+		background-image: -moz-linear-gradient(right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 100%);
+		background-image: -o-linear-gradient(right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 100%);
+		background-image: -webkit-gradient(linear, right top, left top, color-stop(0, rgba(255, 255, 255, 1)), color-stop(1, rgba(255, 255, 255, 0.9)));
+		background-image: -webkit-linear-gradient(right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 100%);
+		background-image: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 100%);
+
+		-webkit-transition: width 0.75s ease-in-out;
+		-moz-transition: width 0.75s ease-in-out;
+		-o-transition: width 0.75s ease-in-out;
+		transition: width 0.75s ease-in-out;
+	}
+	.relevance.shown {
+		box-shadow: 0 0 2px 0 #444;
+		width: 90%;
+		z-index: 999;
+	}
+	.relevance .reveal {
+		opacity: 0;
+		padding: 0.25em;
+		position: relative;
+
+		-webkit-transition: opacity 0 0 ease-in-out;
+		-moz-transition: opacity 0 0 ease-in-out;
+		-o-transition: opacity 0 0 ease-in-out;
+		transition: opacity 0 0 ease-in-out;
+	}
+	.relevance.shown .reveal {
+		opacity: 1;
+
+		-webkit-transition: opacity 0.5s 0.75s ease-in-out;
+		-moz-transition: opacity 0.5s 0.75s ease-in-out;
+		-o-transition: opacity 0.5s 0.75s ease-in-out;
+		transition: opacity 0.5s 0.75s ease-in-out;
+	}
+	.relevance .reveal .logins {
+		bottom: 0.5em;
+		float: right;
+		position: absolute;
+		right: 0;
+		text-align: center;
+		width: 3em;
+	}
+	.relevance .reveal .logins a {
+		color: #000;
+		font-size: 1.5em;
+		text-decoration: none;
+	}
+	.relevance .reveal .logins a i {
+		color: #ccc;
+		display: block;
+	}
+	.relevance .reveal .logins a:hover i {
+		color: #444;
+	}
+	.relevance .reveal .form {
+		margin-right: 3em;
+	}
+	.relevance .reveal .form > * {
+		width: 100%;
+	}
+	.relevance .reveal .form > p {
+		border: 1px dashed #444;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size: 1.5em;
+		height: 180px;
+		line-height: 2.5em;
+		margin: 0;
+		text-align: center;
+	}
+	.relevance .bubble {
+		background: #ccc;
+		border-radius: 0.25em;
+		color: #000;
+		display: inline-block;
+		font-size: 0.75em;
+		opacity: 0.4;
+		padding: 0.25em 0.75em;
+		position: absolute;
+		right: 0.5em;
+		text-align: center;
+		text-decoration: none;
+		top: 0.5em;
+	}
+	.relevance .bubble:after {
+		border-bottom: 0.25em solid transparent;
+		border-left: 0.25em solid #ccc;
+		border-right: 0.25em solid transparent;
+		border-top: 0.25em solid #ccc;
+		content: '';
+		display: block;
+		position: absolute;
+		top: 1.666666666em;
+	}
+	.relevance .bubble:hover,
+	.relevance.shown .bubble {
+		opacity: 1;
+	}
+	</style>
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		$('.container p')
+			.addClass('relevance-container')
+			.append('\
+				<div class="relevance"> \
+					<div class="reveal"> \
+						<div class="logins"> \
+							<a href><i class="icon-facebook"></i></a> \
+							<a href><i class="icon-twitter"></i></a> \
+							<a href><i class="icon-github"></i></a> \
+						</div> \
+						<div class="form"> \
+							<p>Here go all the comments</p> \
+							<textarea placeholder="Your comment..."></textarea> \
+						</div> \
+					</div> \
+					<a href class="bubble">1</a> \
+				</div>')
+			.click(function() {
+				$(this).find('.relevance').removeClass('shown');
+			});
+
+		$('.relevance .bubble').click(function(evt) {
+			evt.preventDefault();
+
+			var parent = $(this).parent();
+			$('.relevance').not(parent).removeClass('shown');
+			parent.toggleClass('shown');
+		});
+
+		$('.relevance').click(function(evt) {
+			evt.stopPropagation();
+		});
+
+		$('.relevance .bubble').each(function() {
+			var num = Math.floor(Math.random() * 42);
+			$(this).text(num);	
+		});
+	});
+	</script>
+</head>
+<body>
+	<div class="container">
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna. Mauris leo massa, ultricies non justo egestas, hendrerit fermentum orci. In placerat pulvinar orci sit amet mattis. Vestibulum convallis sodales blandit. Duis iaculis dictum vulputate. Morbi et tellus vitae felis pellentesque faucibus at at ipsum. Nunc sodales accumsan sapien vitae pellentesque.</p>
+		<p>Quisque vehicula risus tempor, luctus orci eu, condimentum mauris. Donec interdum ut magna vitae convallis. Fusce consequat, elit eget gravida vehicula, lorem tortor lobortis risus, non egestas mi nibh sed velit. Maecenas a scelerisque lectus. Morbi a neque vel ante luctus lacinia. Nam at sapien ante. In tincidunt et urna eget fermentum. Aenean sollicitudin feugiat nibh a pulvinar. Praesent rhoncus sollicitudin tortor a ultrices. Integer tristique blandit dolor eu sodales. Nam eget lacinia risus.</p>
+		<p>Nulla auctor cursus tortor vel vehicula. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed dignissim nibh ac feugiat commodo. Phasellus tempus augue vel eros porttitor, vitae tempor nisl semper. Nam vitae ornare nibh, sit amet tristique urna. Nunc consectetur nisi odio, sed aliquam metus lacinia id. In congue cursus quam vel tincidunt. Etiam diam lorem, rhoncus in felis sit amet, pretium consectetur ipsum. Vestibulum rhoncus id erat sit amet porta. Cras sit amet leo ac massa viverra elementum nec ut arcu. In ac posuere leo, at volutpat eros. Suspendisse id risus porta, tristique arcu quis, luctus orci.</p>
+		<p>Praesent mauris urna, volutpat quis semper vitae, eleifend vel erat. Praesent non lobortis dolor. Sed blandit imperdiet porttitor. Praesent sit amet leo urna. Donec interdum quis lacus nec consequat. Sed sollicitudin, eros nec vestibulum hendrerit, dui mauris congue ante, sit amet gravida sapien leo et augue. Vestibulum faucibus, est scelerisque laoreet tincidunt, orci tortor tristique nisi, in suscipit quam dui ac quam.</p>
+		<p>Pellentesque eu rutrum augue. Sed dolor mi, aliquam vitae fringilla vel, blandit a est. Nunc blandit lectus quis semper malesuada. Nullam sollicitudin elit at nisi accumsan porttitor. Mauris in volutpat nisl. Phasellus ullamcorper quam blandit purus aliquam cursus. Ut consectetur leo in odio placerat porttitor. Pellentesque porttitor venenatis tristique. Fusce ligula velit, tincidunt ac ornare sit amet, fermentum non ante.</p>
+	</div>
+</body>
+</html>
