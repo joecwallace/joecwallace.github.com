@@ -96,7 +96,6 @@
 		color: #888;
 	}
 	.relevance .reveal .comment-form {
-		display: none;
 		margin: 6px 48px 0 12px;
 	}
 	.relevance .reveal .comment-form .control-group {
@@ -104,11 +103,16 @@
 	}
 	.relevance .reveal .comment-form .comment-input {
 		border: 1px solid #ccc;
-		height: 24px;
+		display: none;
+		height: 0;
 		line-height: 20px;
 		margin: 0;
 		padding: 1px 4px;
 		width: 100%;
+	}
+	.relevance .reveal .comment-form.shown .comment-input {
+		display: inline-block;
+		height: 100px;
 	}
 	.relevance .reveal .comment-form .comment-submit {
 		background: #ddd;
@@ -116,12 +120,16 @@
 		border-radius: 2px;
 		color: #888;
 		cursor: pointer;
+		display: none;
 		float: right;
 		height: 24px;
 		margin: 0;
 		padding: 0;
 		vertical-align: top;
 		width: 32px;
+	}
+	.relevance .reveal .comment-form.shown .comment-submit {
+		display: inline-block;
 	}
 	.relevance .reveal .comment-form .comment-submit:hover {
 		background: #ccc;
@@ -364,12 +372,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 
 			$(this).closest('.comments').animate({ scrollTop: $(this).closest('.comments').scrollTop() + $(this).closest('.comment').position().top + 12 }, 750);
 
-			$(this).closest('.relevance').find('.comment-form').show().find('.comment-input').focus();
+			$(this).closest('.relevance').find('.comment-form').addClass('shown').find('.comment-input').focus();
 		});
 		$('.relevance a.direct-reply').click(function(evt) {
 			evt.preventDefault();
 
-			$(this).closest('.relevance').find('.comment-form').show().find('.comment-input').focus();
+			$(this).closest('.relevance').find('.comment-form').addClass('shown').find('.comment-input').focus();
 		});
 
 		$('.relevance').click(function(evt) {
