@@ -8,7 +8,7 @@
 	.container { margin: 0 auto; max-width: 600px; text-align: justify; }
 
 	.relevance-container {
-		padding-right: 3em;
+		padding-right: 48px;
 		position: relative;
 	}
 	.relevance {
@@ -16,7 +16,7 @@
 		position: absolute;
 		top: 0;
 		right: 0;
-		width: 3em;
+		width: 48px;
 		z-index: 995;
 
 		background-image: -ms-linear-gradient(right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 100%);
@@ -38,7 +38,7 @@
 	}
 	.relevance .reveal {
 		opacity: 0;
-		padding: 0.25em;
+		padding: 4px;
 		position: relative;
 
 		-webkit-transition: opacity 0 0 ease-in-out;
@@ -55,16 +55,16 @@
 		transition: opacity 0.5s 0.75s ease-in-out;
 	}
 	.relevance .reveal .logins {
-		bottom: 0.5em;
+		bottom: 8px;
 		float: right;
 		position: absolute;
 		right: 0;
 		text-align: center;
-		width: 3em;
+		width: 48px;
 	}
 	.relevance .reveal .logins a {
 		color: #000;
-		font-size: 1.5em;
+		font-size: 24px;
 		text-decoration: none;
 	}
 	.relevance .reveal .logins a i {
@@ -76,7 +76,7 @@
 	}
 	.relevance .reveal .comments {
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		margin-right: 3em;
+		margin-right: 48px;
 		height: 240px;
 		overflow-y: scroll;
 		padding: 0 12px;
@@ -106,7 +106,7 @@
 		font-size: 16px;
 		font-weight: bold;
 		line-height: 16px;
-		margin: 0 0.25em;
+		margin: 0 4px;
 	}
 	.relevance .reveal .comments .comment .persona .date {
 		display: inline-block;
@@ -124,27 +124,29 @@
 	}
 	.relevance .bubble {
 		background: #ccc;
-		border-radius: 0.25em;
+		border-radius: 4px;
 		color: #000;
 		display: inline-block;
-		font-size: 0.75em;
+		font-size: 12px;
 		opacity: 0.4;
-		padding: 0.25em 0.75em;
+		padding: 4px;
 		position: absolute;
-		right: 0.5em;
+		right: 10px;
 		text-align: center;
 		text-decoration: none;
-		top: 0.5em;
+		top: 6px;
+		width: 20px;
 	}
 	.relevance .bubble:after {
-		border-bottom: 0.25em solid transparent;
-		border-left: 0.25em solid #ccc;
-		border-right: 0.25em solid transparent;
-		border-top: 0.25em solid #ccc;
+		border-bottom: 4px solid transparent;
+		border-left: 4px solid #ccc;
+		border-right: 4px solid transparent;
+		border-top: 4px solid #ccc;
 		content: '';
 		display: block;
+		left: 12px;
 		position: absolute;
-		top: 1.666666666em;
+		top: 24px;
 	}
 	.relevance .bubble:hover,
 	.relevance.shown .bubble {
