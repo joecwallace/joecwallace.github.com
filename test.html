@@ -12,6 +12,7 @@
 		position: relative;
 	}
 	.relevance {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		overflow: hidden;
 		position: absolute;
 		top: 0;
@@ -54,7 +55,7 @@
 		-o-transition: opacity 0.5s 0.75s ease-in-out;
 		transition: opacity 0.5s 0.75s ease-in-out;
 	}
-	.relevance .reveal .logins {
+	.relevance .reveal .toolbar {
 		bottom: 8px;
 		float: right;
 		position: absolute;
@@ -62,24 +63,89 @@
 		text-align: center;
 		width: 48px;
 	}
-	.relevance .reveal .logins a {
-		color: #000;
+	.relevance .reveal .toolbar .logins {
+		margin-top: 6px;
+	}
+	.relevance .reveal .toolbar small {
+		color: #ccc;
+		display: inline-block;
+		font-size: 10px;
+		font-style: italic;
+		margin-bottom: 4px;
+	}
+	.relevance .reveal .toolbar a {
+		color: #ccc;
+		display: block;
 		font-size: 24px;
 		text-decoration: none;
 	}
-	.relevance .reveal .logins a i {
+	.relevance .reveal .toolbar a:hover {
+		color: #444;
+	}
+	.relevance .reveal .direct-reply {
+		background: #f8f8f8;
+		border: 1px dashed #eee;
 		color: #ccc;
 		display: block;
+		margin: 0 48px 6px 12px;
+		padding: 2px 4px;
+		text-decoration: none;
+		white-space: nowrap;
 	}
-	.relevance .reveal .logins a:hover i {
+	.relevance .reveal .direct-reply:hover {
+		color: #888;
+	}
+	.relevance .reveal .comment-form {
+		display: none;
+		margin: 6px 48px 0 12px;
+	}
+	.relevance .reveal .comment-form .control-group {
+		margin-right: 38px;
+	}
+	.relevance .reveal .comment-form .comment-input {
+		border: 1px solid #ccc;
+		height: 24px;
+		line-height: 20px;
+		margin: 0;
+		padding: 1px 4px;
+		width: 100%;
+	}
+	.relevance .reveal .comment-form .comment-submit {
+		background: #ddd;
+		border: none;
+		border-radius: 2px;
+		color: #888;
+		cursor: pointer;
+		float: right;
+		height: 24px;
+		margin: 0;
+		padding: 0;
+		vertical-align: top;
+		width: 32px;
+	}
+	.relevance .reveal .comment-form .comment-submit:hover {
+		background: #ccc;
 		color: #444;
 	}
 	.relevance .reveal .comments {
-		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		margin-right: 48px;
-		height: 240px;
+		height: 0;
 		overflow-y: scroll;
 		padding: 0 12px;
+		position: relative;
+
+		-webkit-transition: height 0.75s 0 ease-in-out;
+		-moz-transition: height 0.75s 0 ease-in-out;
+		-o-transition: height 0.75s 0 ease-in-out;
+		transition: height 0.75s 0 ease-in-out;
+	}
+	.relevance.shown .reveal .comments {
+		height: 240px;
+
+		-webkit-transition: height 0.75s 0.75s ease-in-out;
+		-moz-transition: height 0.75s 0.75s ease-in-out;
+		-o-transition: height 0.75s 0.75s ease-in-out;
+		transition: height 0.75s 0.75s ease-in-out;
 	}
 	.relevance .reveal .comments .comment {
 		padding: 12px 0;
@@ -108,9 +174,18 @@
 		line-height: 16px;
 		margin: 0 4px;
 	}
+	.relevance .reveal .comments .comment .persona a.reply {
+		color: #000;
+		font-size: 12px;
+		margin-left: 6px;
+		opacity: 0.5;
+		text-decoration: none;
+	}
+	.relevance .reveal .comments .comment .persona a.reply:hover {
+		opacity: 1;
+	}
 	.relevance .reveal .comments .comment .persona .date {
 		display: inline-block;
-		float: right;
 		font-size: 12px;
 		font-weight: bold;
 		line-height: 16px;
@@ -122,6 +197,9 @@
 		margin: -8px 0 0 40px;
 		white-space: pre-wrap;
 	}
+	.relevance .reveal .comments .comment .persona .content.active {
+		background-color: rgba(255, 255, 0, 0.3);
+	}
 	.relevance .bubble {
 		background: #ccc;
 		border-radius: 4px;
@@ -129,13 +207,13 @@
 		display: inline-block;
 		font-size: 12px;
 		opacity: 0.4;
-		padding: 4px;
+		padding: 2px 0;
 		position: absolute;
 		right: 10px;
 		text-align: center;
 		text-decoration: none;
 		top: 6px;
-		width: 20px;
+		width: 28px;
 	}
 	.relevance .bubble:after {
 		border-bottom: 4px solid transparent;
@@ -146,7 +224,7 @@
 		display: block;
 		left: 12px;
 		position: absolute;
-		top: 24px;
+		top: 18px;
 	}
 	.relevance .bubble:hover,
 	.relevance.shown .bubble {
@@ -177,17 +255,25 @@
 			.append('\
 				<div class="relevance"> \
 					<div class="reveal"> \
-						<div class="logins"> \
-							<a href><i class="icon-facebook"></i></a> \
-							<a href><i class="icon-twitter"></i></a> \
-							<a href><i class="icon-github"></i></a> \
+						<div class="toolbar"> \
+							<div class="social"> \
+								<small>Share</small> \
+								<a href><i class="icon-facebook"></i></a> \
+								<a href><i class="icon-twitter"></i></a> \
+							</div> \
+							<div class="logins"> \
+								<small>Login to comment</small> \
+								<a href>R<span style="font-size:10px;">.is</span></a> \
+							</div> \
 						</div> \
+						<a href class="direct-reply"><i class="icon-comment-alt"></i> Reply to author</a> \
 						<div class="comments"> \
 							<div class="comment"> \
 								<div class="persona"> \
 									<img src="http://www.gravatar.com/avatar/6573d97f256cd78f556d10d8808d9a1b?s=32"> \
 									<h4 class="name">Joe</h4> \
 									<h6 class="date">7/20/2013 1:26pm</h6> \
+									<a class="reply" href><i class="icon-reply"></i> Leave a reply</a> \
 									<pre class="content">\
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
 									</pre> \
@@ -197,6 +283,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 										<img src="http://www.gravatar.com/avatar/32eb0bd0ccd712041b58f46c701be43c?s=32"> \
 										<h4 class="name">Ryan</h4> \
 										<h6 class="date">7/20/2013 1:26pm</h6> \
+										<a class="reply" href><i class="icon-reply"></i> Leave a reply</a> \
 										<pre class="content">\
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
 										</pre> \
@@ -206,6 +293,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 											<img src="http://www.gravatar.com/avatar/6573d97f256cd78f556d10d8808d9a1b?s=32"> \
 											<h4 class="name">Joe</h4> \
 											<h6 class="date">7/20/2013 1:26pm</h6> \
+										<a class="reply" href><i class="icon-reply"></i> Leave a reply</a> \
 											<pre class="content">\
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
 											</pre> \
@@ -217,6 +305,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 										<img src="http://www.gravatar.com/avatar/f30ff8ad2367afd407a1678e7d8d851f?s=32"> \
 										<h4 class="name">Taylor</h4> \
 										<h6 class="date">7/20/2013 1:26pm</h6> \
+										<a class="reply" href><i class="icon-reply"></i> Leave a reply</a> \
 										<pre class="content">\
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
 										</pre> \
@@ -228,6 +317,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 									<img src="http://www.gravatar.com/avatar/32eb0bd0ccd712041b58f46c701be43c?s=32"> \
 									<h4 class="name">Ryan</h4> \
 									<h6 class="date">7/20/2013 2:07pm</h6> \
+									<a class="reply" href><i class="icon-reply"></i> Leave a reply</a> \
 									<pre class="content">\
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
 									</pre> \
@@ -238,10 +328,17 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 									<img src="http://www.gravatar.com/avatar/f30ff8ad2367afd407a1678e7d8d851f?s=32"> \
 									<h4 class="name">Taylor</h4> \
 									<h6 class="date">7/20/2013 2:12pm</h6> \
+									<a class="reply" href><i class="icon-reply"></i> Leave a reply</a> \
 									<pre class="content">\
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
 									</pre> \
 								</div> \
+							</div> \
+						</div> \
+						<div class="comment-form"> \
+							<button class="comment-submit"><i class="icon-comment"></i></button> \
+							<div class="control-group"> \
+								<textarea class="comment-input"></textarea> \
 							</div> \
 						</div> \
 					</div> \
@@ -257,6 +354,22 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 			var parent = $(this).parent();
 			$('.relevance').not(parent).removeClass('shown');
 			parent.toggleClass('shown');
+		});
+
+		$('.relevance a.reply').click(function(evt) {
+			evt.preventDefault();
+
+			$('.relevance .comments .content').removeClass('active');
+			$(this).siblings('.content').first().addClass('active');
+
+			$(this).closest('.comments').animate({ scrollTop: $(this).closest('.comments').scrollTop() + $(this).closest('.comment').position().top + 12 }, 750);
+
+			$(this).closest('.relevance').find('.comment-form').show().find('.comment-input').focus();
+		});
+		$('.relevance a.direct-reply').click(function(evt) {
+			evt.preventDefault();
+
+			$(this).closest('.relevance').find('.comment-form').show().find('.comment-input').focus();
 		});
 
 		$('.relevance').click(function(evt) {
