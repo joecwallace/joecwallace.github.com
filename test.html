@@ -354,7 +354,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 					<a href class="bubble">1</a> \
 				</div>')
 			.click(function() {
-				$(this).find('.relevance').removeClass('shown');
+				$(this).find('.relevance').removeClass('shown').find('.comment-form').removeClass('shown');
 			});
 
 		$('.relevance .bubble').click(function(evt) {
@@ -362,7 +362,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis ni
 
 			var parent = $(this).parent();
 			$('.relevance').not(parent).removeClass('shown');
-			parent.toggleClass('shown');
+			parent.toggleClass('shown').find('.comment-form').removeClass('shown');
 		});
 
 		$('.relevance a.reply').click(function(evt) {
