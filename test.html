@@ -74,20 +74,53 @@
 	.relevance .reveal .logins a:hover i {
 		color: #444;
 	}
-	.relevance .reveal .form {
-		margin-right: 3em;
-	}
-	.relevance .reveal .form > * {
-		width: 100%;
-	}
-	.relevance .reveal .form > p {
-		border: 1px dashed #444;
+	.relevance .reveal .comments {
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		font-size: 1.5em;
-		height: 180px;
-		line-height: 2.5em;
+		margin-right: 3em;
+		height: 240px;
+		overflow-y: scroll;
+		padding: 0 12px;
+	}
+	.relevance .reveal .comments .comment {
+		padding: 12px 0;
+	}
+	.relevance .reveal .comments .comment + .comment {
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.relevance .reveal .comments .comment > .comment {
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+		margin: 8px 0 0 40px;
+		padding-bottom: 0;
+	}
+	.relevance .reveal .comments .comment .persona {
+	}
+	.relevance .reveal .comments .comment .persona img {
+		border-radius: 20px;
+		box-shadow: 0 2px 2px #444;
+		height: 32px;
+		vertical-align: top;
+		width: 32px;
+	}
+	.relevance .reveal .comments .comment .persona .name {
+		display: inline-block;
+		font-size: 16px;
+		font-weight: bold;
+		line-height: 16px;
+		margin: 0 0.25em;
+	}
+	.relevance .reveal .comments .comment .persona .date {
+		display: inline-block;
+		float: right;
+		font-size: 12px;
+		font-weight: bold;
+		line-height: 16px;
 		margin: 0;
-		text-align: center;
+		opacity: 0.5;
+	}
+	.relevance .reveal .comments .comment .persona .content {
+		font-family: inherit;
+		margin: -8px 0 0 40px;
+		white-space: pre-wrap;
 	}
 	.relevance .bubble {
 		background: #ccc;
@@ -120,6 +153,18 @@
 	.relevance .bubble:focus {
 		outline: 0;
 	}
+	.relevance .reveal .comments::-webkit-scrollbar {
+		width: 8px;
+	}
+	.relevance .reveal .comments::-webkit-scrollbar-button {
+		height: 0;
+	}
+	.relevance .reveal .comments::-webkit-scrollbar-thumb {
+		background: rgba(0, 0, 0, 0.1);
+	}
+	.relevance .reveal .comments::-webkit-scrollbar-thumb:hover {
+		background: #ccc;
+	}
 	</style>
 
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -135,9 +180,67 @@
 							<a href><i class="icon-twitter"></i></a> \
 							<a href><i class="icon-github"></i></a> \
 						</div> \
-						<div class="form"> \
-							<p>Here go all the comments</p> \
-							<textarea placeholder="Your comment..."></textarea> \
+						<div class="comments"> \
+							<div class="comment"> \
+								<div class="persona"> \
+									<img src="http://www.gravatar.com/avatar/6573d97f256cd78f556d10d8808d9a1b?s=32"> \
+									<h4 class="name">Joe</h4> \
+									<h6 class="date">7/20/2013 1:26pm</h6> \
+									<pre class="content">\
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
+									</pre> \
+								</div> \
+								<div class="comment"> \
+									<div class="persona"> \
+										<img src="http://www.gravatar.com/avatar/32eb0bd0ccd712041b58f46c701be43c?s=32"> \
+										<h4 class="name">Ryan</h4> \
+										<h6 class="date">7/20/2013 1:26pm</h6> \
+										<pre class="content">\
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
+										</pre> \
+									</div> \
+									<div class="comment"> \
+										<div class="persona"> \
+											<img src="http://www.gravatar.com/avatar/6573d97f256cd78f556d10d8808d9a1b?s=32"> \
+											<h4 class="name">Joe</h4> \
+											<h6 class="date">7/20/2013 1:26pm</h6> \
+											<pre class="content">\
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
+											</pre> \
+										</div> \
+									</div> \
+								</div> \
+								<div class="comment"> \
+									<div class="persona"> \
+										<img src="http://www.gravatar.com/avatar/f30ff8ad2367afd407a1678e7d8d851f?s=32"> \
+										<h4 class="name">Taylor</h4> \
+										<h6 class="date">7/20/2013 1:26pm</h6> \
+										<pre class="content">\
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
+										</pre> \
+									</div> \
+								</div> \
+							</div> \
+							<div class="comment"> \
+								<div class="persona"> \
+									<img src="http://www.gravatar.com/avatar/32eb0bd0ccd712041b58f46c701be43c?s=32"> \
+									<h4 class="name">Ryan</h4> \
+									<h6 class="date">7/20/2013 2:07pm</h6> \
+									<pre class="content">\
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
+									</pre> \
+								</div> \
+							</div> \
+							<div class="comment"> \
+								<div class="persona"> \
+									<img src="http://www.gravatar.com/avatar/f30ff8ad2367afd407a1678e7d8d851f?s=32"> \
+									<h4 class="name">Taylor</h4> \
+									<h6 class="date">7/20/2013 2:12pm</h6> \
+									<pre class="content">\
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu convallis nisl. Nulla ut felis urna.\r\n\r\nMauris leo massa, ultricies non justo egestas, hendrerit fermentum orci.\
+									</pre> \
+								</div> \
+							</div> \
 						</div> \
 					</div> \
 					<a href class="bubble">1</a> \
