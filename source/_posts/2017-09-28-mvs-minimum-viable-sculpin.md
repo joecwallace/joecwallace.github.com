@@ -27,7 +27,7 @@ Now, we just need to generate a static site.
 
 Sculpin is the most prominent static site generator written in PHP. (I'm mainly making that up, but it *IS* the #1 Google search result right now for "PHP static site generator".) The main idea is that you create some templates, write some markdown, generate the site, *et voilà*.
 
-I've gone down this road multiple times, and it - for me, at least - always ends in frustration. The [Get Started](https://sculpin.io/getstarted/) section of the Sculpin documentation suggests using their "Starter Kit", which is a great way to see a bunch of things the first time you attempt to generate your file. The problem is that I found it overwhelming and difficult to separate the wheat from the chaff, and that (previously) has always ultimately stymied me.
+I've gone down this road multiple times, and it - for me, at least - always ends in frustration. The [Get Started](https://sculpin.io/getstarted/) section of the Sculpin documentation suggests using their "Starter Kit", which is a great way to see a bunch of things the first time you attempt to generate your site. The problem is that I found it overwhelming and difficult to separate the wheat from the chaff, and that (previously) has always ultimately stymied me.
 
 But now, I've figured it out! [This whole site](https://joecwallace.com) - [at the time of this writing](https://github.com/joecwallace/joecwallace.github.com/tree/285bc5d56d20fae636547b40a7f7e4a5235b3aa3) - is the product of 4 directories & 5 files (excluding Composer stuff), and if you don't care about styles at all (a look I like to call "retro-responsive"), you can eliminate 1 folder & 1 file. 💥
 
