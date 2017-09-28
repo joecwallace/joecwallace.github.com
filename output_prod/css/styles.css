@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Domine|Raleway|Share+Tech+Mono');
+@import url('https://fonts.googleapis.com/css?family=Domine|Raleway|VT323');
 @import url('/css/normalize.css');
 
 body {
@@ -51,7 +51,7 @@ code {
     border: 1px solid #ccc;
     border-radius: 4px;
     display: inline-block;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'VT323', monospace;
     padding: 0 4px;
 }
 
