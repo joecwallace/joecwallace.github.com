@@ -1,0 +1,14 @@
+{
+    "name": "joecwallace/site",
+    "description": "My personal web site.",
+    "require": {
+        "sculpin/sculpin": "^2.1"
+    },
+    "authors": [
+        {
+            "name": "Joe Wallace",
+            "email": "joe.c.wallace@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
