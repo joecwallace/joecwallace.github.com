@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Joe C. Wallace, III</title>
+        <meta name="description" content="A personal web site.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    </head>
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <div class="container">
+            <h1>Joe C. Wallace, III</h1>
+            <hr>
+            <p><a href="/">&laquo; Home</a></p>
+            <h2 id="mvs---minimum-viable-sculpin">MVS - Minimum Viable Sculpin</h2>
+
+<p>This site has sat here, unloved, for some years. I have good itentions for it - always have - but I keep <a href="https://en.wiktionary.org/wiki/yak_shaving">yak shaving</a>. Anyway, now it's up and running more-or-less the way that I've wanted, and that's because I was finally able to undertand what constitutes Minimum Viable Sculpin.</p>
+
+<p><em>[tl;dr - Here is <a href="https://github.com/joecwallace/joecwallace.github.com/tree/285bc5d56d20fae636547b40a7f7e4a5235b3aa3">the repo for this site</a> at its most basic. You can even ignore the <code>output_prod/</code> folder and <code>CNAME</code> file in there.]</em></p>
+
+<h3 id="requirements">Requirements</h3>
+
+<p>You see - there are 2 factors to my site:</p>
+
+<ol>
+<li>I want to use my personal domain for it.</li>
+<li>I would rather not pay for it. (WHERE MY MISERS AT, Y'ALL?!?)</li>
+</ol>
+
+<p>The best way I know to get both of these things is to use <a href="https://pages.github.com/">GitHub Pages</a> and a static site generator, and since I mostly write PHP these days, I decided to give Sculpin a shot.</p>
+
+<h3 id="github-pages">GitHub Pages</h3>
+
+<p>It's out of the scope of this article to explain how to get started with GitHub Pages, so you can head on over to the documentation at the link above and figure that out. The important part about GitHub Pages, though, is that it's free hosting for a static site at your custom domain! That satisfies Requirements #1 and #2 up there, so we're off to a good start.</p>
+
+<p>Now, we just need to generate a static site.</p>
+
+<h3 id="sculpin">Sculpin</h3>
+
+<p>Sculpin is the most prominent static site generator written in PHP. (I'm mainly making that up, but it <em>IS</em> the #1 Google search result right now for "PHP static site generator".) The main idea is that you create some templates, write some markdown, generate the site, <em>et voilà</em>.</p>
+
+<p>I've gone down this road multiple times, and it - for me, at least - always ends in frustration. The <a href="https://sculpin.io/getstarted/">Get Started</a> section of the Sculpin documentation suggests using their "Starter Kit", which is a great way to see a bunch of things the first time you attempt to generate your file. The problem is that I found it overwhelming and difficult to separate the wheat from the chaff, and that (previously) has always ultimately stymied me.</p>
+
+<p>But now, I've figured it out! <a href="https://joecwallace.com">This whole site</a> - <a href="https://github.com/joecwallace/joecwallace.github.com/tree/285bc5d56d20fae636547b40a7f7e4a5235b3aa3">at the time of this writing</a> - is the product of 4 directories &amp; 5 files (excluding Composer stuff), and if you don't care about styles at all (a look I like to call "retro-responsive"), you can eliminate 1 folder &amp; 1 file. 💥</p>
+
+<h4 id="all-the-files-and-folders-that-you-need.">All the files and folders that you need.</h4>
+
+<p>Here's the whole tree:</p>
+
+<pre><code>(root)
+|- source/
+   |- _layouts/
+      |- default.twig
+      |- post.twig
+   |- _posts/
+      |- 2049-03-17-sexy-futuristic-post.md
+      |- # repeat as necessary
+   |- css/
+      |- styles.css
+   |- index.md
+|- composer.json
+|- composer.lock
+</code></pre>
+
+<h4 id="the-commands-that-get-you-there">The commands that get you there</h4>
+
+<p>Easy-peasy. To make this even easier, here are the commands that I used to get there:</p>
+
+<pre><code>$ mkdir sexy-futuristic-blog &amp;&amp; cd sexy-futuristic-blog
+$ composer init -q -s dev
+$ composer require sculpin/sculpin
+$ mkdir -p source/_layouts source/_posts source/css
+</code></pre>
+
+<p>If you're a regular bash user and have experience with Composer (and I'm assuming you do), then this should be obvious to you. I will note, though, that <code>composer init -q -s dev</code> creates a <code>composer.json</code> file for you without any interaction and sets the minimum stability to <code>dev</code> (which, at the time of this writing, seems to be required to install Sculpin).</p>
+
+<p>Now you just need to add your content. Let's walk through the 5 required files.</p>
+
+<h4 id="breaking-it-down">Breaking it down</h4>
+
+<ol>
+<li><code>source/_layouts/default.twig</code> - This is the HTML structure for you page. It's a <code>.twig</code> file, which may be intimidating if you've never used twig, but it's <em>just an HTML file</em>. And then in the middle - wherever you want your "content" to come out, you write: <code>{% block content %}{% endblock %}</code>. Here's <a href="https://github.com/joecwallace/joecwallace.github.com/blob/285bc5d56d20fae636547b40a7f7e4a5235b3aa3/source/_layouts/default.twig">my default.twig</a> right now; it's super simple.</li>
+<li><code>source/_layouts/post.twig</code> - <a href="https://github.com/joecwallace/joecwallace.github.com/blob/285bc5d56d20fae636547b40a7f7e4a5235b3aa3/source/_layouts/post.twig">In my case</a>, this doesn't really add anything, but Sculpin wants to find it. The important part is <code>{% extends 'default' %}</code>. If you don't have a footer block, then you that little snippet is literally all you need.</li>
+<li><code>source/_posts/2049-03-17-sexy-futuristic-post.md</code> - This is a blog post or article or whatever. It has a special format, but - as far as I can tell - the only thing that you really need here is the <code>title</code> field in the YAML header. After the header, it's just a markdown file. <a href="https://raw.githubusercontent.com/joecwallace/joecwallace.github.com/285bc5d56d20fae636547b40a7f7e4a5235b3aa3/source/_posts/2017-09-27-hello-world.md">My first post</a> is about as simple as it gets.</li>
+<li><code>source/css/styles.css</code> - This is a stylesheet. You probably already know what it is, and - as mentioned previously - it's technically optional. End of discussion.</li>
+<li><code>source/index.md</code> - This is your home page! It needs some special YAML at the top, and if you want to display posts, you have to do a little extra work. Again though - <a href="https://raw.githubusercontent.com/joecwallace/joecwallace.github.com/285bc5d56d20fae636547b40a7f7e4a5235b3aa3/source/index.md">my version</a> is very simple. It should be pretty easy to figure out. The 2 "trickiest" parts are the <code>use: ["posts"]</code> line and the <code>{% for post in data.posts %}</code> block, which are related and - you'll never guess this part - have to do with listing all of the posts.</li>
+</ol>
+
+<h4 id="admiring-your-work">Admiring your work</h4>
+
+<p>Now, you've achieved MVS. To prove it, run:</p>
+
+<pre><code>./vendor/bin/scupin generate --watch --server
+open http://localhost:8000
+</code></pre>
+
+<h3 id="fin.">Fin.</h3>
+
+<p>There you have it: an empty fistful of excuses.</p>
+
+<p>I'm sure that you - or some of you, at least - are thinking, "What about pagination and categories and tags <em>et cetera</em>?" To you, I say "Add that later. Just get this little setup working for you and start writing."</p>
+            <hr>
+<p><em>What did you think about this post? Let me know at <a href="https://twitter.com/joecwallace">the Twitter.com web site</a>.</em></p>
+<p><a href="/">&laquo; Home</a></p>
+        </div>
+
+        <script>
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga('create','UA-53787606-1','auto');ga('send','pageview')
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    </body>
+</html>
