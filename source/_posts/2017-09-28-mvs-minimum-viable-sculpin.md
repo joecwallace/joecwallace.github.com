@@ -79,8 +79,8 @@ Now you just need to add your content. Let's walk through the 5 required files.
 Now, you've achieved MVS. To prove it, run:
 
 ```
-./vendor/bin/scupin generate --watch --server
-open http://localhost:8000
+$ ./vendor/bin/scupin generate --watch --server
+$ open http://localhost:8000
 ```
 
 ### Fin.
