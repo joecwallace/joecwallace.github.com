@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Joe C. Wallace, III</title>
+        <meta name="description" content="A personal web site.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    </head>
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <div class="container">
+            <h1>Joe C. Wallace, III</h1>
+            <hr>
+            <p><a href="/">&laquo; Home</a></p>
+            <h2 id="subtree-sculpin-deployments">Subtree Sculpin deployments</h2>
+
+<p>So, you read my last post about <a href="http://joecwallace.com/2017/09/28/mvs-minimum-viable-sculpin/">Minimum Viable Sculpin</a> and made yourself a sweet Internet Web Site, but you want to deploy it to GitHub Pages - like I mentioned. <em>[Aside: I wrote that entire last blog post just so that I could write this one because I felt like an MFing WIZARD when I figured this out.]</em> The problem is that GitHub Pages wants this directory structure:</p>
+
+<pre><code>|- css/
+   |- # stuff is in here
+|- js/
+   |- # stuff is in here
+|- other-folder/
+   |- # maybe some other stuff
+|- index.html
+</code></pre>
+
+<p>But our good friend Sculpin wants this:</p>
+
+<pre><code>|- source/
+   |- # all the stuff is in here
+|- composer.json
+|- composer.lock
+|- # and maybe some other files, I don't know
+</code></pre>
+
+<p>Ehh... Those things are <em>not</em> the same.</p>
+
+<h3 id="what-to-do%3F">What to do?</h3>
+
+<p>If you're like me, you went HAM on the <code>master</code> branch in the last blog post, and - of course - for <em>personal</em> GitHub Pages, you deploy from the <code>master</code> branch. So now you're like "WTF?", and we're going to have to 💣💥🔥🔫🔪 that thing.</p>
+
+<p>But let's back up some. The first thing that we want to do is preserve your work by creating a new <code>develop</code> branch. Or maybe you'll call yours <code>blogging</code> or <code>writing</code>, since it's the branch that you'll use to <em>produce</em> content. Anyway...</p>
+
+<pre><code>$ git checkout -b develop-or-whatever
+$ ./vendor/bin/sculpin generate --env=prod
+$ git add .
+$ git commit -m 'Built production'
+</code></pre>
+
+<p>OK. We generated the production version of your site, which you may have done previously, and now you have an <code>output_prod</code> folder hanging out in there, which we've added and commited to the repository. This is good: <code>output_prod</code> is where the magic will happen.</p>
+
+<h3 id="tangent%3A-dafuq%27s-a-subtree%3F">Tangent: Dafuq's a subtree?</h3>
+
+<p>What are subtrees? Well, they're a thing that Git does. And uh, they're like subfolders that have separate repositories (or at least separate branches, which is an important detail that we'll see later). And, y'know, they're like The Upside Down in Stranger Things because they're totally a different world, but they also have manifestations in the real world - aka your <code>develop-or-whatever</code> branch.</p>
+
+<p>And - I'm going to be totally honest with you here - I don't know how to describe them to you, but lots of other projects use them successfully. Like all of the Laravel packages. Go check out the <a href="https://github.com/illuminate">Illuminate</a> GitHub: they're almost all called "[READ ONLY] Subtree split", and they get all smooshed together in the <a href="https://github.com/laravel/framework">Laravel Framework</a> package.</p>
+
+<p>And here's the kicker if you go in the <a href="https://github.com/laravel/framework/tree/5.5/src/Illuminate"><code>src/Illuminate</code></a> folder, <strong><em>ALL OF THE SUBFOLDERS ARE STILL IN THERE - WHAT THE WHAT?!?</em></strong>. But - they're really managed by the content of the subtrees. (This concept is the Demogorgon.)</p>
+
+<p>In other words, a subtree is confusing - that's dafuq it is - but it's also better than a submodule if you've ever marched through that particular circle of Hell.</p>
+
+<h3 id="back-to-the-action">Back to the action</h3>
+
+<p>You're on the <code>develop-or-whatever</code> branch, and you've got your full <code>master</code> branch up on GitHub just in case this goes bad. Now, you're going to <em>boldly</em> delete the <code>master</code> branch from your local copy of the repository.</p>
+
+<pre><code>$ git branch -D master
+</code></pre>
+
+<p>Why do you do that? Because you need just the folder structure that GitHub Pages wants in there - i.e. you need the <code>output_prod</code> folder.</p>
+
+<p>Oh? We need <code>output_prod</code>, you say?</p>
+
+<pre><code>$ git subtree split --prefix=output_prod -b master
+</code></pre>
+
+<p>That just created a new version of the <code>master</code> branch for you. Its sole contents are the <code>output_prod</code> folder's contents of your current branch. And that's exactly what you want. You can verify this by running the following commands:</p>
+
+<pre><code>$ git branch -v
+  # Helpfully shows you all the branches you have, including your swanky new master
+$ git checkout master
+$ ls -lah
+  # Hey look, I was right. That looks just like the output_prod folder
+</code></pre>
+
+<p>Great. That was cool, so now you're feeling all cocky - cocky enough to run <em>this command</em>:</p>
+
+<pre><code>$ git push -f origin master:master
+</code></pre>
+
+<p><em>You: Yo, did he just <code>push -f</code> to <code>master</code>?</em></p>
+
+<p><em>Macho Man Randy Savage:</em></p>
+
+<p><img src="https://media.giphy.com/media/oCPglisSuGsA8/giphy.gif" alt="Just Relax" /></p>
+
+<p>The nice thing is that you just pushed the newest version of your site to the <code>master</code> branch, so now it's deployed on GitHub Pages. The weird thing is that ... we're not done working yet. Bummer.</p>
+
+<h3 id="repeal-and-replace-the-subtree">Repeal and replace the subtree</h3>
+
+<pre><code>$ git rm -r output_prod
+$ git add -A
+$ git commit -m 'Remove output_prod'
+$ git subtree add --prefix=output_prod origin master
+</code></pre>
+
+<p>Phew. You deleted the <code>output_prod</code> folder and added it right back - as a subtree.</p>
+
+<h3 id="updating-your-site">Updating your site</h3>
+
+<p>From here on, you basically want to stay on your <code>develop-or-whatever</code> branch. Write an article, update your headshot, do whatever you do, and then run:</p>
+
+<pre><code>$ git add .
+$ git commit -m 'Made the changes'
+$ git push origin develop-or-whatever
+$ ./vendor/bin/sculpin generate --env=prod
+$ git add output_prod
+$ git commit -m 'Build for production'
+$ git subtree push --prefix=output_prod origin master
+</code></pre>
+
+<p>Did you notice how we committed the changes to the site <em>before</em> we generated the production version and then <em>isolated the changes to the <code>output_prod</code> folder</em>? That's important. Because reasons.</p>
+
+<p>(Really, you have to remember that your <code>output_prod</code> subtree is the completely separate - and different - <code>master</code> branch, and if you crossed the streams, it would be bad - i.e. your history would be FUBAR.)</p>
+
+<h3 id="one-last-note">One last note</h3>
+
+<p>Good news! Your new static web site earned you so much money that you bought a new computer, so now you need to clone the repository and publish a new article. Well, it's a tiny bit trickier than just cloning and hacking away. Of course, you'll still need to clone:</p>
+
+<pre><code>$ git clone https://github.com/your/site.git
+</code></pre>
+
+<p>But then you'll have to run the 4 commands in <a href="#repeal-and-replace-the-subtree">Repeal and replace the subtree</a>. And of course, you'll follow the procedure in <a href="#updating-your-site">Updating your site</a> to publish updates.</p>
+
+<h3 id="bonus">Bonus</h3>
+
+<p>You thought that last last note was the last note. Nope. Sucker.</p>
+
+<p>These commands aren't <em>everyday</em> Git commands - for me, anyway. So you may want to alias them. Jam this in your <code>~/.zshrc</code> or whatever you do.</p>
+
+<pre><code>alias develop-site='./vendor/bin/sculpin generate --watch --server'
+alias build-site='./vendor/bin/sculpin generate --env=prod'
+alias publish-site='git subtree push --prefix=output_prod origin master'
+</code></pre>
+
+<p>We didn't cover that first one in this article; it's a freebie, but you'll use it often if you keep up the writing.</p>
+
+<h3 id="fin.">Fin.</h3>
+
+<p>I don't know. Maybe this was obvious to you geniuses, but I was going down the road of maintaining 2 separate repositories for my site - one for the source and one for the build - until I thought of this. And - as with all good ideas - it was inspired by other similar ones (see below).</p>
+
+<p><em>Credit where due: I learned most of the strategy that I used here from <a href="https://lostechies.com/johnteague/2014/04/04/using-git-subtrees-to-split-a-repository/">LosTechies "Using Git subtrees to split a repository"</a>.</em></p>
+            <hr>
+<p><em>What did you think about this post? Let me know at <a href="https://twitter.com/joecwallace">the Twitter.com web site</a>.</em></p>
+<p><a href="/">&laquo; Home</a></p>
+        </div>
+
+        <script>
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga('create','UA-53787606-1','auto');ga('send','pageview')
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    </body>
+</html>
