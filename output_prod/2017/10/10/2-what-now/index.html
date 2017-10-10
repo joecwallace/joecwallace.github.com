@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Joe C. Wallace, III</title>
+        <meta name="description" content="A personal web site.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    </head>
+    <body class="language-php">
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <div class="container">
+            <h1>Joe C. Wallace, III</h1>
+            <hr>
+            <p><a href="/">&laquo; Home</a></p>
+            <h2 id="what-now%3F-digital-ocean%2C-i-guess">What Now? Digital Ocean, I guess</h2>
+
+<p>This is the second in a series. Check out the rest:</p>
+
+<ol>
+<li><a href="/2017/10/10/1-first-composer-package">First Composer Package</a></li>
+<li>What Now? Digital Ocean, I guess. <em>You are here.</em></li>
+<li>Teasing out an API with TDD. <em>Coming soon.</em></li>
+</ol>
+
+<p>In <a href="/2017/10/10/1-first-composer-package">part 1</a>, we just added some boilerplate for this Composer package, which will hopefully make it super simple to create servers on cloud providers. In this part, we're going to start playing around with a provider's API. Let's see how it goes.</p>
+
+<h3 id="which-provider%3F">Which provider?</h3>
+
+<p>Look, this thing needs to work with AWS, Digital Ocean, Linode(?), Rackspace(?), and others, and I have to start somewhere. I'll start with Digital Ocean because it's cheap, and I already have an account. Rock and roll.</p>
+
+<h3 id="start-with-packagist">Start with Packagist</h3>
+
+<p>So, I'm not going to write all of this code myself. Christ, I don't have that kind of time. Right now on <a href="https://packagist.org/">Packagist</a>, the most downloaded DO-related project is <a href="https://packagist.org/packages/toin0u/digitalocean-v2">toin0u/digitalocean-v2</a>. A quick gander at the <a href="https://github.com/toin0u/DigitalOceanV2">GitHub page</a> shows that it has been updated somewhat recently. We'll hope that the last 4 montsh of inactivity are due to stability; after all, there are only a few open pull requests.</p>
+
+<pre><code>composer require toin0u/digitalocean-v2
+</code></pre>
+
+<h3 id="thoughts-about-requiring-this-dependency">Thoughts about requiring this dependency</h3>
+
+<p>Down the road, it would make more sense to list this in the <code>suggests</code> portion of the <code>composer.json</code> for this library. If - for example - you don't plan to ever use Digital Ocean, then we shouldn't force this dependency on you. For now, though, we're just playing around, so we'll require it and (maybe) move it to <code>suggests</code> later.</p>
+
+<h3 id="playing-around-with-the-library">Playing around with the library</h3>
+
+<p>Now, to play around, I want a REPL. I like <a href="https://packagist.org/packages/psy/psysh"><code>psy/psysh</code></a>.</p>
+
+<pre><code>composer require --dev psy/psysh
+./vendor/bin/psysh
+</code></pre>
+
+<p>OK. In the REPL, let's try to instantiate the Digital Ocean package's primary objects and make some noise.</p>
+
+<p>(Just in case you're under the mistaken impression that I'm some sort of knowledgeable professional, this is literally what happened in my REPL just now.)</p>
+
+<pre><code>&gt;&gt;&gt; require 'vendor/autoload.php';
+=&gt; Composer\Autoload\ClassLoader
+&gt;&gt;&gt; new DigitalOceanV2\DigitalOceanV2
+TypeError: Too few arguments to function DigitalOceanV2\DigitalOceanV2::__construct(), 0 passed in /Users/joe/Code/multicloud/vendor/psy/psysh/src/Psy/ExecutionLoop/Loop.php(90) : eval()'d code on line 1 and exactly 1 expected
+&gt;&gt;&gt; new DigitalOceanV2\DigitalOceanV2('test')
+TypeError: Argument 1 passed to DigitalOceanV2\DigitalOceanV2::__construct() must be an instance of DigitalOceanV2\Adapter\AdapterInterface, string given on line 1
+&gt;&gt;&gt; new DigitalOceanV2\DigitalOceanV2(new DigitalOceanV2\Adapter\GuzzleHttpAdapter)
+TypeError: Too few arguments to function DigitalOceanV2\Adapter\GuzzleHttpAdapter::__construct(), 0 passed in /Users/joe/Code/multicloud/vendor/psy/psysh/src/Psy/ExecutionLoop/Loop.php(90) : eval()'d code on line 1 and at least 1 expected
+&gt;&gt;&gt; new DigitalOceanV2\DigitalOceanV2(new DigitalOceanV2\Adapter\GuzzleHttpAdapter('test'))
+PHP error:  Class 'GuzzleHttp\ClientInterface' not found in /Users/joe/Code/multicloud/vendor/toin0u/digitalocean-v2/src/Adapter/GuzzleHttpAdapter.php on line 35
+</code></pre>
+
+<p>Looks like we need to install <a href="https://packagist.org/packages/guzzlehttp/guzzle">guzzlehttp/guzzle</a>, which I have some familiarity with. In fact - if I had read the <code>toin0u/digitalocean-v2</code> documentation, I would have known this already.</p>
+
+<pre><code>composer require guzzlehttp/guzzle
+</code></pre>
+
+<p>And back to the REPL:</p>
+
+<pre><code>&gt;&gt;&gt; new DigitalOceanV2\DigitalOceanV2(new DigitalOceanV2\Adapter\GuzzleHttpAdapter('test'))
+=&gt; DigitalOceanV2\DigitalOceanV2
+</code></pre>
+
+<p>Huh? That worked?!? What in the world is <code>'test'</code>? I need to investigate...</p>
+
+<h3 id="some-source-code">Some source code</h3>
+
+<p>Aha! Here is the constructor for the <code>GuzzleHttpAdapter</code>:</p>
+
+<pre><code>    /**
+     * @param string               $token
+     * @param ClientInterface|null $client
+     */
+    public function __construct($token, ClientInterface $client = null)
+    {
+        $this-&gt;client = $client ?: new Client();
+
+        $this-&gt;client-&gt;setDefaultOption('headers/Authorization', sprintf('Bearer %s', $token));
+    }
+</code></pre>
+
+<p>I'm guessing <code>'test'</code> isn't going to do the trick because it looks like an API token, but - what the hell - let's try to ... uh ... list all the droplets, I guess. Back to the REPL:</p>
+
+<pre><code>&gt;&gt;&gt; (new DigitalOceanV2\DigitalOceanV2(new DigitalOceanV2\Adapter\GuzzleHttpAdapter('test')))-&gt;droplet()-&gt;getAll()
+DigitalOceanV2\Exception\HttpException with message 'Unable to authenticate you.'
+</code></pre>
+
+<p>Nice! It's working*.</p>
+
+<p><em>&#42; This may not meet all definitions of working, but it looks like progress to me!</em></p>
+
+<h3 id="i-think-we-have-a-winner">I think we have a winner</h3>
+
+<p>Once more, with my actual key...</p>
+
+<pre><code>&gt;&gt;&gt; (new DigitalOceanV2\DigitalOceanV2(new DigitalOceanV2\Adapter\GuzzleHttpAdapter('7h1515n074r34lk3y')))-&gt;droplet()-&gt;getAll()
+=&gt; []
+</code></pre>
+
+<p>It's <em>actually</em> working now. The empty array indicates that I don't have any servers running, which is true.</p>
+
+<p>The API for <code>toin0u/digitalocean-v2</code> seems simple enough and keeps me from writing a bunch of code. We'll use it for our further explorations.</p>
+
+<p>Up next: let's TDD a little of our package's API.</p>
+            <hr>
+<p><em>What did you think about this post? Let me know at <a href="https://twitter.com/joecwallace">the Twitter.com web site</a>.</em></p>
+<p><a href="/">&laquo; Home</a></p>
+        </div>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+        <script>
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga('create','UA-53787606-1','auto');ga('send','pageview')
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    </body>
+</html>

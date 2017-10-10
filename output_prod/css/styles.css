@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Domine|Raleway|VT323');
+@import url('https://fonts.googleapis.com/css?family=Domine|Raleway|Source+Code+Pro');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css');
 @import url('/css/normalize.css');
 
 body {
@@ -51,7 +52,8 @@ code {
     border: 1px solid #ccc;
     border-radius: 4px;
     display: inline-block;
-    font-family: 'VT323', monospace;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.9rem;
     padding: 0 4px;
 }
 
