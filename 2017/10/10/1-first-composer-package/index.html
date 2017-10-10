@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Joe C. Wallace, III</title>
+        <meta name="description" content="A personal web site.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    </head>
+    <body class="language-php">
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <div class="container">
+            <h1>Joe C. Wallace, III</h1>
+            <hr>
+            <p><a href="/">&laquo; Home</a></p>
+            <h2 id="my-first-composer-package">My First Composer Package</h2>
+
+<p>Friend, I have never written a Composer package before, so in this article, I'm going to walk through trying to do it for the first time. It might be a train wreck.</p>
+
+<p>Without further ado...</p>
+
+<p><strong><em>&lt;record scratch&gt;</em></strong></p>
+
+<p>I started writing this thing, and then I realized it was going to get YUGE. It is now a series. This is part 1.</p>
+
+<p>Here are the other parts:</p>
+
+<ol>
+<li><a href="/2017/10/10/2-what-now">What now? Digital Ocean, I guess</a></li>
+</ol>
+
+<h3 id="requirements">Requirements</h3>
+
+<p>I want a library that creates servers on cloud providers. To just spitball some syntax, I'm thinking something like this:</p>
+
+<pre><code>$configArray = ['some' =&gt; 'useful', 'stuff' =&gt; 'like', 'api' =&gt; 'keys'];
+$provisioner = new \MyPackage\Provisioner($configArray);
+$provisioner
+    -&gt;server()
+    -&gt;named('HAL9000')
+    -&gt;in('east')
+    -&gt;from('image')
+    -&gt;sized('large')
+    -&gt;launch('aws');
+</code></pre>
+
+<p>This is obviously subject to change, but basically, I've supplied a name, region, image, size, &amp; provider for the instance. Later, we'll need to stop and/or terminate instances, but we'll focus only on creation right now.</p>
+
+<h3 id="boilerplate">Boilerplate</h3>
+
+<p>I made a subdirectory in the directory that has all my codestuffs in it already. I called it <code>multicloud</code>. I hate it, but let's keep moving.</p>
+
+<p>I then created <code>src/</code> &amp; <code>tests/</code> folders, initialized Composer, initialized Git, and installed my first Composer dependency - <code>phpunit</code>.</p>
+
+<p>Here are the commands:</p>
+
+<pre><code>$ mkdir multicloud &amp;&amp; cd multicloud
+$ mkdir {src,tests}
+$ composer init
+$ git init
+$ composer require --dev phpunit/phpunit
+</code></pre>
+
+<p>Here's the contents of my <code>composer.json</code>:</p>
+
+<pre><code>{
+    "name": "joecwallace/multicloud",
+    "description": "Create cloud servers across multiple providers - AWS, Digital Ocean, etc",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joe C. Wallace, III",
+            "email": "joe.c.wallace@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Multicloud\\": "src/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    }
+}
+</code></pre>
+
+<p>Notice the <code>autload</code> entry. I had to set that up manually.</p>
+
+<p>Finally, I created a basic <code>.gitignore</code> file:</p>
+
+<pre><code>composer.lock
+vendor/
+</code></pre>
+
+<p>Basic. Let's get to the good stuff.</p>
+            <hr>
+<p><em>What did you think about this post? Let me know at <a href="https://twitter.com/joecwallace">the Twitter.com web site</a>.</em></p>
+<p><a href="/">&laquo; Home</a></p>
+        </div>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+        <script>
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga('create','UA-53787606-1','auto');ga('send','pageview')
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    </body>
+</html>
