@@ -9,7 +9,7 @@
 
         <link rel="stylesheet" type="text/css" href="/css/styles.css">
     </head>
-    <body>
+    <body class="language-php">
         <!--[if lte IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
@@ -22,6 +22,8 @@
             {% block footer %}{% endblock %}
         </div>
 
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
         <script>
             window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
             ga('create','UA-53787606-1','auto');ga('send','pageview')
