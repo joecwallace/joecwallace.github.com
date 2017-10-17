@@ -76,7 +76,7 @@ Here's the contents of my `composer.json`:
 }
 ```
 
-Notice the `autload` entry. I had to set that up manually.
+Notice the `autoload` entry. I had to set that up manually.
 
 Finally, I created a basic `.gitignore` file:
 
